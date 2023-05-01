@@ -1,0 +1,17 @@
+{
+  "name": "ts-result",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --loader tsx --test src/result.test.ts",
+    "test:watch": "node --loader tsx --test --watch src/result.test.ts"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tsx": "^3.12.7",
+    "typescript": "^5.0.4"
+  }
+}
