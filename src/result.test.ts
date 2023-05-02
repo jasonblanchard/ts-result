@@ -49,7 +49,7 @@ describe("wrap", () => {
 });
 
 describe("wrapAsync", () => {
-  async function asyncIdentityResolve<V>(arg: V): Promise<V> {
+  async function asyncIdentityResolve(arg: string): Promise<string> {
     return arg;
   }
 
@@ -58,6 +58,8 @@ describe("wrapAsync", () => {
   }
 
   test("with success", async () => {
+    type T = Awaited<ReturnType<typeof asyncIdentityResolve>>;
+
     const result = await wrapAsync(asyncIdentityResolve)("test");
     assert.strictEqual(result.ok, true);
     assert.strictEqual(result.value, "test");

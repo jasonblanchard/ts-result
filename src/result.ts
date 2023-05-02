@@ -23,10 +23,10 @@ export function wrap<T extends (...args: any[]) => any>(
 
 export function wrapAsync<T extends (...args: any[]) => Promise<any>>(
   fn: T
-): (...args: Parameters<T>) => Promise<Result<ReturnType<T>>> {
+): (...args: Parameters<T>) => Promise<Result<Awaited<ReturnType<T>>>> {
   return async function (
     ...args: Parameters<T>
-  ): Promise<Result<ReturnType<T>>> {
+  ): Promise<Result<Awaited<ReturnType<T>>>> {
     try {
       const value = await fn(...args);
       return {
