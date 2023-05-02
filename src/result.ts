@@ -4,40 +4,33 @@ export type Result<T, E = Error> =
 
 export function wrap<T extends (...args: any[]) => any>(
   fn: T
-): (...args: Parameters<T>) => Result<ReturnType<T>> {
-  return function (...args: Parameters<T>): Result<ReturnType<T>> {
-    try {
-      const value = fn(...args);
-      return {
-        ok: true,
-        value,
-      };
-    } catch (error) {
-      return {
-        ok: false,
-        error: error as Error,
-      };
-    }
-  };
+): Result<ReturnType<T>> {
+  try {
+    const value = fn();
+    return {
+      ok: true,
+      value,
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      error: error as Error,
+    };
+  }
 }
 
-export function wrapAsync<T extends (...args: any[]) => Promise<any>>(
-  fn: T
-): (...args: Parameters<T>) => Promise<Result<Awaited<ReturnType<T>>>> {
-  return async function (
-    ...args: Parameters<T>
-  ): Promise<Result<Awaited<ReturnType<T>>>> {
-    try {
-      const value = await fn(...args);
+export async function wrapAsync<T>(promise: Promise<T>): Promise<Result<T>> {
+  return promise
+    .then((value) => {
       return {
-        ok: true,
+        ok: true as true,
         value,
       };
-    } catch (error) {
+    })
+    .catch((error: Error) => {
       return {
-        ok: false,
-        error: error as Error,
+        ok: false as false,
+        error: error,
       };
-    }
-  };
+    });
 }
